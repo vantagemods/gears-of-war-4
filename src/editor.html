@@ -1,0 +1,38 @@
+<template>
+    <require from="libvantage/vantage.css"></require>
+    
+    <header>Player</header>
+    <style>
+        v-selection {
+            max-width: 270px;
+        }
+    </style>
+    <card label="Model">
+        <v-selection value.bind="playerModel" options.bind="availablePlayerModels"></v-selection>
+    </card>
+
+    <header>Weapons</header>
+    <card label="Max Ammo">
+        <v-button click.delegate="maxAmmo()">Max Ammo</v-selection>
+    </card>
+    <card label="Left Slot">
+        <v-selection value.bind="weapons[2].model" options.bind="availableWeapons"></v-selection>
+		<v-number max="9999999" value.bind="weapons[2].ammo"></v-number>
+    </card>
+    <card label="Right Slot">
+        <v-selection value.bind="weapons[3].model" options.bind="availableWeapons"></v-selection>
+		<v-number max="9999999" value.bind="weapons[3].ammo"></v-number>
+    </card>
+    <card label="Top Slot">
+        <v-selection value.bind="weapons[1].model" options.bind="availableWeapons"></v-selection>
+		<v-number max="9999999" value.bind="weapons[1].ammo"></v-number>
+    </card>
+    <card label="Bottom Slot">
+        <v-selection value.bind="weapons[0].model" options.bind="availableWeapons"></v-selection>
+		<v-number max="9999999" value.bind="weapons[0].ammo"></v-number>
+    </card>
+    <card label="Extra Slot">
+        <v-selection value.bind="weapons[4].model" options.bind="availableWeapons"></v-selection>
+		<v-number max="9999999" value.bind="weapons[4].ammo"></v-number>
+    </card>
+</template>

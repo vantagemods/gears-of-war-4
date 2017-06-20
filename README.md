@@ -1,1 +1,1 @@
-# gow4
+# Gears of War 4 editor for Xbox One and PC

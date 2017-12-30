@@ -50,6 +50,11 @@ export default [
         clipSize: 5,
     },
     {
+        name: 'Markza (Flashlight)',
+        model: '/Game/Weapons/UIR/UIR_Markza/BP_GearWeap_UIR_Markza_Mk1_Flashlight.BP_GearWeap_UIR_Markza_Mk1_Flashlight_C',
+        clipSize: 5,
+    },
+    {
         name: 'Mega Robot Stapler',
         model: '/Game/Weapons/DeeBee/MegaStapler/BP_MegaStapler.BP_MegaStapler_C',
         clipSize: 1000000,
@@ -95,17 +100,12 @@ export default [
         clipSize: 1,
     },
     {
-        name: 'Combat Knife',
-        model: '/Game/Weapons/COG/Cccknife/GP01/BP_GearProp_CombatKnife_COG_CCCKnife',
-        clipSize: 1,
-    },
-    {
-        name: 'DeeBee EM Rifle',
-        model: 'BP_DeeBee_EM_Rifle_C',
+        name: 'DeeBee EMBAR',
+        model: '/Game/Weapons/DeeBee/DeeBee_EM_Rifle/BP_DeeBee_EM_Rifle.BP_DeeBee_EM_Rifle_C',
         clipSize: 3,
     },
     {
-        name: 'DeeBee SMG (Enforcer)',
+        name: 'DeeBee Enforcer',
         model: '/Game/Weapons/DeeBee/DeeBee_SMG/BP_GearWeap_DeeBee_SMG_PeaceMaker.BP_GearWeap_DeeBee_SMG_PeaceMaker_C',
         clipSize: 40,
     },   
@@ -118,11 +118,6 @@ export default [
         name: 'Salvo Rocket Launcher',
         model: '/Game/Weapons/DeeBee/DeeBee_GrenadeLauncher/BP_GearWeap_GrenadeLauncher.BP_GearWeap_GrenadeLauncher_C',
         clipSize: 1,
-    },
-    {
-        name: 'DeeBee Helicopter Rocket Launcher',
-        model: '/Game/Weapons/DeeBee/DeeBee_Kestrel/BP_GearWeap_DB_Kestrel_RocketLauncher.BP_GearWeap_DB_Kestrel_RocketLauncher_C',
-        clipSize: 4,
     },
     {
         name: 'Mega Robot Stapler',

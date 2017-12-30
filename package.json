@@ -2,7 +2,7 @@
   "name": "vantage-gow4-editor",
   "author": "Team Vantage",
   "description": "Gears of War 4 campaign mods by Team Vantage.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "vantage": {
     "game": "Gears of War 4",
     "scid": "780f0100-3c66-41ff-b8cc-964f20ee78c6",
@@ -21,6 +21,7 @@
     "big-integer": "^1.6.23",
     "bluebird": "^3.4.1",
     "crc-32": "^1.0.2",
+    "libvantage": "^0.1.1",
     "requirejs": "^2.3.2",
     "text": "github:requirejs/text#latest",
     "tslib": "^1.7.1"
@@ -40,8 +41,8 @@
     "gulp-plumber": "^1.1.0",
     "gulp-rename": "^1.2.2",
     "gulp-sourcemaps": "^2.0.0-alpha",
-    "gulp-typescript": "^3.1.4",
     "gulp-tslint": "^5.0.0",
+    "gulp-typescript": "^3.1.4",
     "html-minifier": "^3.2.3",
     "minimatch": "^3.0.2",
     "through2": "^2.0.1",

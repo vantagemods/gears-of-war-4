@@ -1,6 +1,10 @@
 import { readString, writeString } from './util';
 import { Stream } from 'libvantage';
 
+export type ObjectMap = {
+    [objectName: string]: any;
+};
+
 class Header {
     public mapName: string;
     public mapId: Buffer;
@@ -69,14 +73,14 @@ class ObjectStruct {
     public static read(io: Stream): ObjectStruct {
         const struct = new ObjectStruct();
         struct.objectName = io.readUInt32();
-        struct.objectType = io.readUInt32();
+        struct.objectType = io.readInt32();
         struct.data = io.readBytes(io.readUInt32() + 45); // TODO: Sup with this?
         return struct;
     }
 
     public write(io: Stream): void {
         io.writeUInt32(this.objectName);
-        io.writeUInt32(this.objectType);
+        io.writeInt32(this.objectType);
         io.writeUInt32(this.data.length - 45);
         io.writeBytes(this.data);
     }
@@ -201,13 +205,18 @@ class Save {
         save.objectNames = io.loopUInt32(ObjectName.read);
         save.strings = io.loopUInt32(readString);
         save.packageFlags = io.loopUInt32(PackageFlags.read);
+        // contains information about each object
         save.structs = io.loopUInt32(ObjectStruct.read);
         save.levelFlags = io.loopUInt32(LevelFlag.read);
         save.aiFactories = io.loopUInt32(AIFactory.read);
         save.navComponents = io.loopUInt32(NavComponent.read);
+        // additional information about structures
         save.objectProperties = io.loopUInt32(ObjectProperties.read);
+        // list of object ids
         save.objectList = io.loopUInt32(() => io.readUInt32());
         save.unknown = io.readBytes(io.readUInt32());
+
+        // read object name and type ids
         save.objects = io.loopUInt32(UEObject.read);
         save.footer = io.readToEnd();
         return save;
@@ -273,32 +282,15 @@ export class SavepointBinaryBlob {
     public hasObjectName(name: string): boolean {
         return this.objectNameStrings.includes(name);
     }
-
-    public getObjectIndexOriginal(name: string, type: string): number {
-        const nameIndex = this.storeObjectName(this.data.objectNames, name.split('.'));
-        if (nameIndex === this.objectNameStrings.length) {
-            this.objectNameStrings.push(name);
-        } else {
-            this.objectNameStrings[nameIndex] = name;
-        }
-        const typeIndex = this.storeObjectName(this.data.objectNames, type.split('.'));
-        if (typeIndex === this.objectNameStrings.length) {
-            this.objectNameStrings.push(type);
-        } else {
-            this.objectNameStrings[typeIndex] = type;
-        }
-        this.objectNameStrings[typeIndex] = type;
-        const existing = this.data.objects.findIndex(o => o.name === nameIndex && o.type === typeIndex);
-        if (existing !== -1) {
-            return existing;
-        }
-        const object = new UEObject();
-        object.name = nameIndex;
-        object.type = typeIndex;        
-        this.data.objects.push(object);
-        return this.data.objects.length - 1;
+    public shouldLoadObject(name: string): boolean {
+        return (this.objectNameStrings.includes(name)
+        && this.getObjectStruct(name).objectType !== -1);
     }
-    public getObjectIndex(name: string, type: string, insert: number): number {
+    public isStructReplaceable(name: string): boolean {
+        return (this.objectNameStrings.includes(name)
+        &&  this.getObjectStruct(name).objectType === -1);
+    }    
+    public getObjectIndex(name: string, type: string, insertName: boolean): number {
         const nameIndex = this.storeObjectName(this.data.objectNames, name.split('.'));
         const typeIndex = this.storeObjectName(this.data.objectNames, type.split('.'));
         const existing = this.data.objects.findIndex(o => o.name === nameIndex && o.type === typeIndex);
@@ -308,18 +300,113 @@ export class SavepointBinaryBlob {
         const object = new UEObject();
         object.name = nameIndex;
         object.type = typeIndex;
-        if (insert == 1) {
+        let value = typeIndex;
+        if (insertName) {
             this.data.objectList.push(nameIndex);
-        } else if(insert == 2) {
+            value = this.data.objects.length;
+        } else {
             this.data.objectList.push(typeIndex);
-        }     
+        }   
         this.data.objects.push(object);
-        return this.data.objects.length - 1;
+        return value;
+    }
+
+    public getSimpleObjectIndex(name: string, type: string): number {
+        const typeIndex = this.storeObjectName(this.data.objectNames, type.split('.'));
+        const nameIndex =  this.storeObjectName(this.data.objectNames, name.split('.'))      
+
+        const existing = this.data.objects.findIndex(o => o.name === nameIndex && o.type === typeIndex);
+        if (existing !== -1) {
+            return existing;
+        }
+        const object = new UEObject();
+        object.name = nameIndex;
+        object.type = typeIndex;
+        let value = nameIndex;
+        this.data.objects.push(object);
+        return value;
     }
 
     public getObjectStruct(name: string): ObjectStruct {
         return this.data.structs.find(s => s.objectName === this.objectNameStrings.indexOf(name));
     }
+    
+    public getObjectStructs(name: string, sort? : boolean): ObjectMap[] {
+        // instances will have an underscore and id after the object name
+        // ex : {GearObjectC -> GearObjectC_0}
+        const names = this.objectNameStrings.filter( s => s.includes(name + "_"));
+        if(sort)
+        {
+            names.sort();
+        }
+        var objStructs = [];
+        names.forEach(name => {            
+            const objectData = this.getObjectStruct(name);
+           
+            const shouldLoad = this.shouldLoadObject(name);
+            if(shouldLoad) {
+                objStructs[name] = objectData;     
+            }       
+        });
+        return objStructs;
+    }
+    public setObjectStruct(name: string, data: Buffer) {       
+        let struct = this.getObjectStruct(name);
+        if(struct)
+        {
+            struct.data = data;
+        }
+        else{
+            throw Error("did not find structure!");
+        }
+    }
+    public setObjectStructAndType(name: string, objectType : number, data: Buffer) {
+      
+        let struct = this.getObjectStruct(name);
+        if(struct)
+        {
+            struct.data = data;
+            struct.objectType = objectType;
+        }
+        else{
+            throw Error("did not find structure!");
+        }
+    }    
+    public addObjectStruct(name: number, type: number, data: Buffer) {
+     
+        const newStruct = new ObjectStruct();
+        newStruct.objectType = type;
+        newStruct.objectName = name;
+        newStruct.data = data;
+        this.data.structs.push(newStruct);
+        // refresh
+        this.objectNameStrings = this.parseObjectNames(this.data.objectNames); 
+        this.data.objectNames = this.serializeObjectNames();
+    }    
+    public deleteObjectStruct(name: string)  {
+
+        let struct = this.getObjectStruct(name);
+        if(struct)
+        {          
+            struct.objectType = -1;
+        }
+        else{
+            throw Error("did not find structure!");
+        }   
+            
+        const objectName = this.objectNameStrings.indexOf(name);        
+        this.data.objectList = this.data.objectList.filter(s => s !== objectName);
+    }
+    private getInstanceId(name: string): number {
+        const instanceIndex = name.lastIndexOf('_');
+        if (instanceIndex !== -1) {
+            const possibleId = name.substr(instanceIndex + 1);
+            if (possibleId.length !== 0 && (possibleId === '0' || possibleId.match(/^[1-9][0-9]*$/))) {
+                return parseInt(possibleId) + 1;
+            }
+        }
+        return 0;
+    }    
 
     private parseObjectNames(names: ObjectName[]): string[] {
         const strings = this.data.strings;

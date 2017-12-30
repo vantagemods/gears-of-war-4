@@ -2,37 +2,139 @@
     <require from="libvantage/vantage.css"></require>
     
     <header>Player</header>
+        <style>
+        v-number input {           
+            width: 200px;            
+        }  
+</style>    
     <style>
         v-selection {
             max-width: 270px;
-        }
+        }  
+     
     </style>
     <card label="Model">
         <v-selection value.bind="playerModel" options.bind="availablePlayerModels"></v-selection>
+        
+    </card> 
+    <card>
+        <table>
+            <thead>            
+                <th>X Coordinate</th>
+                <th>Y Coordinate</th>            
+                <th>Z Coordinate</th>  
+            </thead>
+            <tbody>
+                <td>  
+                    <v-number value.bind="player.coordinates.X" min="-100000000000000" max="100000000000000"></v-number>
+                </td>
+                <td>   
+                    <v-number value.bind="player.coordinates.Y" min="-100000000000000" max="100000000000000"></v-number>
+                </td>
+                <td>   
+                    <v-number value.bind="player.coordinates.Z" min="-100000000000000" max="100000000000000"></v-number>
+                </td>                     
+        </table>                            
     </card>
-
     <header>Weapons</header>
     <card label="Max Ammo">
-        <v-button click.delegate="maxAmmo()">Max Ammo</v-selection>
+        <v-button click.delegate="maxAmmo()">Max Ammo</v-button>
     </card>
     <card label="Left Slot">
         <v-selection value.bind="weapons[2].model" options.bind="availableWeapons"></v-selection>
-		<v-number max="9999999" value.bind="weapons[2].ammo"></v-number>
+		<v-number max="100000000" value.bind="weapons[2].ammo"></v-number>
     </card>
     <card label="Right Slot">
         <v-selection value.bind="weapons[3].model" options.bind="availableWeapons"></v-selection>
-		<v-number max="9999999" value.bind="weapons[3].ammo"></v-number>
+		<v-number max="100000000" value.bind="weapons[3].ammo"></v-number>
     </card>
     <card label="Top Slot">
         <v-selection value.bind="weapons[1].model" options.bind="availableWeapons"></v-selection>
-		<v-number max="9999999" value.bind="weapons[1].ammo"></v-number>
+		<v-number max="100000000" value.bind="weapons[1].ammo"></v-number>
     </card>
     <card label="Bottom Slot">
         <v-selection value.bind="weapons[0].model" options.bind="availableWeapons"></v-selection>
-		<v-number max="9999999" value.bind="weapons[0].ammo"></v-number>
+		<v-number max="100000000" value.bind="weapons[0].ammo"></v-number>
     </card>
     <card label="Extra Slot">
         <v-selection value.bind="weapons[4].model" options.bind="availableWeapons"></v-selection>
-		<v-number max="9999999" value.bind="weapons[4].ammo"></v-number>
+		<v-number max="100000000" value.bind="weapons[4].ammo"></v-number>
     </card>
+
+    <header>Squad AI</header>   
+    <card label="Max Ammo for Entire Squad">
+        <v-button click.delegate="maxAllAIAmmo()">Max Ammo</v-button>
+    </card>    
+    <card>
+        <table>
+            <thead>            
+                <th>Model</th>
+                <th>Editing</th>                
+                <th>Clone</th>
+                <th>Delete</th>
+            </thead>
+            <tbody>
+                <template repeat.for="aiController of aiControllerMap | objectKeys & signal:'ai-signal'" >
+                    <tr if.bind="aiController">
+                        <td>    
+                            <v-selection value.bind="aiController.type" options.bind="availablePlayerModels"></v-selection>
+                        </td>
+                         <td>
+                             <v-button click.delegate="editAIProperties(aiController)">Edit Properties</v-button>
+                        </td>
+                        <td>                          
+                            <v-button click.delegate="cloneAI(aiController)">Clone</v-button>                           
+                        </td>
+                        <td>                          
+                            <v-button click.delegate="deleteAI(aiController)">Delete</v-button>                           
+                        </td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </card>    
+    <header>AI Position</header>
+    <card>
+        <table>
+            <thead>            
+                <th>X Coordinate</th>
+                <th>Y Coordinate</th>            
+                <th>Z Coordinate</th>  
+            </thead>
+            <tbody>
+                <td>  
+                    <v-number value.bind="aiCoordinates.X" min="-100000000000000" max="100000000000000"></v-number>
+                </td>
+                <td>   
+                    <v-number value.bind="aiCoordinates.Y" min="-100000000000000" max="100000000000000"></v-number>
+                </td>
+                <td>   
+                    <v-number value.bind="aiCoordinates.Z" min="-100000000000000" max="100000000000000"></v-number>
+                </td>                     
+        </table>                            
+    </card>
+    <header>AI Weapons</header>
+    <card label="Max Ammo">
+        <v-button click.delegate="maxAIAmmo()">Max Ammo</v-button>
+    </card>
+    <card label="Left Slot">
+        <v-selection value.bind="aiWeapons[2].model" options.bind="availableWeapons"></v-selection>
+		<v-number max="100000000" value.bind="aiWeapons[2].ammo"></v-number>
+    </card>
+    <card label="Right Slot">
+        <v-selection value.bind="aiWeapons[3].model" options.bind="availableWeapons"></v-selection>
+		<v-number max="100000000" value.bind="aiWeapons[3].ammo"></v-number>
+    </card>
+    <card label="Top Slot">
+        <v-selection value.bind="aiWeapons[1].model" options.bind="availableWeapons"></v-selection>
+		<v-number max="100000000" value.bind="aiWeapons[1].ammo"></v-number>
+    </card>
+    <card label="Bottom Slot">
+        <v-selection value.bind="aiWeapons[0].model" options.bind="availableWeapons"></v-selection>
+		<v-number max="100000000" value.bind="aiWeapons[0].ammo"></v-number>
+    </card>
+    <card label="Extra Slot">
+        <v-selection value.bind="aiWeapons[4].model" options.bind="availableWeapons"></v-selection>
+		<v-number max="100000000" value.bind="aiWeapons[4].ammo"></v-number>
+    </card>    
 </template>

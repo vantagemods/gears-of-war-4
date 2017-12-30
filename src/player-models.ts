@@ -11,7 +11,6 @@ export default [
         label: 'Female 1',
         value: '/Game/Gameplay/Characters/BP_GearPawn_PRO_Anvil_Female1.BP_GearPawn_PRO_Anvil_Female1_C',
     },
-    // Act I : 1
     {
         label: 'JD (Outsider)',
         value: '/Game/Gameplay/Characters/BP_GearPawn_Hero_JD_Outsider.BP_GearPawn_Hero_JD_Outsider_C',
@@ -24,7 +23,7 @@ export default [
         label: 'Kait (Outsider)',
         value: '/Game/Gameplay/Characters/BP_GearPawn_Hero_Kait_Outsider.BP_GearPawn_Hero_Kait_Outsider_C',
     },
-   {
+    {
         label: 'Oscar (Outsider)',
         value: '/Game/Gameplay/Characters/BP_GearPawn_Hero_Oscar_Outsider.BP_GearPawn_Hero_Oscar_Outsider_C',
     }, 
@@ -85,10 +84,6 @@ export default [
         value: '/Game/Gameplay/Characters/BP_GearPawn_PRO_HOS_Male2.BP_GearPawn_PRO_HOS_Male2_C',
     },
     {
-        label: 'Avil Male 1',
-        value: '/Game/Gameplay/Characters/BP_GearPawn_PRO_Anvil_Male1.BP_GearPawn_PRO_Anvil_Male1_C',
-    },
-    {
         label: 'Anvil Female 1',
         value: '/Game/Gameplay/Characters/BP_GearPawn_PRO_Anvil_Female1.BP_GearPawn_PRO_Anvil_Female1_C',
     },
@@ -104,10 +99,10 @@ export default [
         label: 'Marcus (Farmer)',
         value: '/Game/Gameplay/Characters/BP_GearPawn_Hero_Marcus_Farmer.BP_GearPawn_Hero_Marcus_Farmer_C',
     },
-    //{
-       // label: 'DeeBee Kestrel Helicopter',
-       // value: '/Game/Gameplay/Characters/BP_GearPawn_DB_Kestrel.BP_GearPawn_DB_Kestrel_C',
-    //}, 
+    /*{
+        label: 'DeeBee Kestrel Helicopter',
+        value: '/Game/Gameplay/Characters/BP_GearPawn_DB_Kestrel.BP_GearPawn_DB_Kestrel_C',
+    },*/
     {
         label: 'DeeBee PeaceMaker',
         value: '/Game/Gameplay/Characters/BP_GearPawn_DB_Shepherd_PeaceMaker.BP_GearPawn_DB_Shepherd_PeaceMaker_C',
@@ -164,12 +159,13 @@ export default [
         label: 'JD (MegaTech)',
         value: '/Game/Gameplay/Characters/BP_GearPawn_MegaMech_Driver_JD.BP_GearPawn_MegaMech_Driver_JD_C',
     }, 
-   {
+    {
         label: 'Kait (MegaTech)',
         value: '/Game/Gameplay/Characters/BP_GearPawn_MegaMech_Driver_Kait.BP_GearPawn_MegaMech_Driver_Kait_C',
     },     
-   // {
-    //    label: 'Locust Swarmak',
-    //    value: '/Game/Gameplay/Characters/BP_GearPawn_Swarm_Swarmak_Dam.BP_GearPawn_Swarm_Swarmak_Dam_C',
-    //},                                     
+    /*{
+        label: 'Locust Swarmak',
+        value: '/Game/Gameplay/Characters/BP_GearPawn_Swarm_Swarmak_Dam.BP_GearPawn_Swarm_Swarmak_Dam_C',
+    },*/ 
+                                      
 ];

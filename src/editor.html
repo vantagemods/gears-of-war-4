@@ -2,16 +2,13 @@
     <require from="libvantage/vantage.css"></require>
     
     <header>Player</header>
-        <style>
-        v-number input {           
-            width: 200px;            
-        }  
-</style>    
     <style>
+        v-number input {           
+            width: 200px;
+        }  
         v-selection {
             max-width: 270px;
-        }  
-     
+        }     
     </style>
     <card label="Model">
         <v-selection value.bind="playerModel" options.bind="availablePlayerModels"></v-selection>

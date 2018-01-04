@@ -150,7 +150,10 @@ export class GearController {
     public mesh: string;
     private unknownBytes1: Buffer; // Weapon holstered, team index?
     public squadName: number;
-    private unknownBytes2: Buffer; // Something with weapon slots
+    private unknownBytes2: Buffer; 
+    private script : string;
+    private unknownBytes3: Buffer; // Something with weapon slots
+    
     public weapons: GearWeapon[];
     public restOfData: Buffer;
   
@@ -166,7 +169,9 @@ export class GearController {
         this.mesh = readString(io);
         this.unknownBytes1 = io.readBytes(1);
         this.squadName = io.readUInt32();
-        this.unknownBytes2 = io.readBytes(14);
+        this.unknownBytes2 = io.readBytes(6);
+        this.script = readString(io);
+        this.unknownBytes3 = io.readBytes(4);        
         this.weapons = io.loopUInt32(() => this.readWeapon(io));
         this.restOfData = io.readToEnd();
     }
@@ -192,6 +197,8 @@ export class GearController {
         io.writeBytes(this.unknownBytes1);
         io.writeUInt32(this.squadName);
         io.writeBytes(this.unknownBytes2);
+        writeString(io, this.script);
+        io.writeBytes(this.unknownBytes3);                  
         io.writeUInt32(this.weapons.length);
         this.weapons.forEach(weapon => {
             io.writeUInt32(weapon.objectName);

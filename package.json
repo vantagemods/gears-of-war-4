@@ -1,13 +1,13 @@
 {
-  "name": "vantage-gow4-editor",
-  "author": "Team Vantage",
-  "description": "Gears of War 4 campaign mods by Team Vantage.",
+  "name": "Forza Motorsport 7",
+  "author": "BBM Mods",
+  "description": "Forza Motorsport 7 money and xp by BBM Mods.",
   "version": "0.2.0",
   "vantage": {
-    "game": "Gears of War 4",
-    "scid": "780f0100-3c66-41ff-b8cc-964f20ee78c6",
+    "game": "Forza Motorsport 7",
+    "scid": "00000000-0000-0000-0000-0000772f15b8",
     "thumbnailUrl": "http://images-eds.xboxlive.com/image?url=8Oaj9Ryq1G1_p3lLnXlsaZgGzAie6Mnu24_PawYuDYIoH77pJ.X5Z.MqQPibUVTc7m7DdisPYa9rYxWbLTN0ct8VW1l4UR7wPB3e84IXDjsA9YoOAHAxSt1.df01sbTabLSGwy7tPEGTbRJaW7FdN8aYcGX5pCoFMZo.zEsX7wT7s_7drm02zRZmNuDGtxxnU4xW6n20BPyfUFYiM5h4Ndv06roCGzRrpDLOTH5Dt6o-&w=128&h=128",
-    "name": "Campaign Editor",
+    "name": "Money and xp",
     "fileFilter": "/^GearSaveSlot_\\d+$/"
   },
   "repository": {

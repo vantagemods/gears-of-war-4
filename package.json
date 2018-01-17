@@ -2,7 +2,7 @@
   "name": "vantage-gow4-editor",
   "author": "Team Vantage",
   "description": "Gears of War 4 campaign mods by Team vantage.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "vantage": {
     "game": "Gears of War 4",
     "scid": "780f0100-3c66-41ff-b8cc-964f20ee78c6",

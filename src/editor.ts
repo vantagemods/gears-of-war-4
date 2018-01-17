@@ -294,7 +294,7 @@ export class Editor implements SaveEditor {
                 objectName: this.savePoint.getObjectIndex(weapon.model, bluePrintPrefix, true),
                 slot: x,
                 ammoUsedCount:  0,
-                spareAmmoCount: model ? weapon.ammo - (model.clipSize) : weapon.ammo,
+                spareAmmoCount: model ? ( (weapon.ammo < model.clipSize) ? weapon.ammo : weapon.ammo - (model.clipSize) ) : weapon.ammo,
                 extraWeapon: 0,
             }
         });

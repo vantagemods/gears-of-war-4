@@ -74,7 +74,7 @@ class ObjectStruct {
         const struct = new ObjectStruct();
         struct.objectName = io.readUInt32();
         struct.objectType = io.readInt32();
-        struct.data = io.readBytes(io.readUInt32() + 45); // TODO: Sup with this?
+        struct.data = io.readBytes(io.readUInt32() + 45);
         return struct;
     }
 
@@ -308,6 +308,7 @@ export class SavepointBinaryBlob {
             this.data.objectList.push(typeIndex);
         }   
         this.data.objects.push(object);
+        this.reloadObjectNames();
         return value;
     }
 
@@ -380,8 +381,7 @@ export class SavepointBinaryBlob {
         newStruct.data = data;
         this.data.structs.push(newStruct);
         // refresh
-        this.objectNameStrings = this.parseObjectNames(this.data.objectNames); 
-        this.data.objectNames = this.serializeObjectNames();
+        this.reloadObjectNames();
     }    
     public deleteObjectStruct(name: string)  {
 
@@ -461,9 +461,12 @@ export class SavepointBinaryBlob {
         return names.length - 1;
     }
 
-    public toBuffer(): Buffer {
+    private reloadObjectNames(): void {
         this.objectNameStrings = this.parseObjectNames(this.data.objectNames); 
         this.data.objectNames = this.serializeObjectNames();
+    }
+    public toBuffer(): Buffer {
+        this.reloadObjectNames();
         const io = Stream.reserve(500 * 1024);
         this.data.write(io);
         return io.getBuffer();
